@@ -1,2 +1,14 @@
-# nowcoder_offer
-剑指 Offer 题解
+OJcodes
+---
+
+take challenge and solve probelms with lines of codes
+
+
+
+
+
+
+
+
+---
+Talking is cheap, show me the codes.
