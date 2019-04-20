@@ -108,6 +108,38 @@ public:
 };
 ```
 
+#### 4. 整型数组中a[i], a[j]最大乘积、最大差值
+相关系列O(N)
+
+#### 5. lowestCommonAncestor 树中两个节点的最低公共祖先
+```c++
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        // no assume that p->val <= q->val
+        if (root==NULL) return root;
+        
+        if (root->val < p->val && root->val < q->val) {
+            return lowestCommonAncestor(root->right, p, q);
+        }
+        else if (root->val > p->val && root->val > q->val) {
+            return lowestCommonAncestor(root->left, p, q);
+        }
+        
+        return root;
+    }
+};
+```
+
 
 
 
