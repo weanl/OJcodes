@@ -81,8 +81,32 @@ public:
     }
 };
 ```
-一个拓展的问题：如何利用哈希表，将限定取值范围的排序任务的时间复杂度降到O(N).
+(待续)一个拓展的问题：如何利用哈希表，将限定取值范围的排序任务的时间复杂度降到O(N).
 
+
+#### 3. minNumberInRotateArray 旋转数组的最小数字
+```c++
+class Solution {
+public:
+    int minNumberInRotateArray(vector<int> rotateArray) {
+        int LEN = rotateArray.size();
+        if (!LEN) {return 0;}
+        // binary search
+        
+        int left=0, right=LEN-1;
+        while (left<right) {
+            int mid = left + (right-left)/2;
+            if (rotateArray[mid] < rotateArray[right]) {right = mid;}
+            else if (rotateArray[mid] > rotateArray[right]) {left = mid + 1;}
+            //else {return std::min(rotateArray[left], rotateArray[right]);}
+            else {right--;}
+            
+        }
+        
+        return rotateArray[left];
+    }
+};
+```
 
 
 
