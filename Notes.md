@@ -53,5 +53,37 @@ public:
     }
 };
 ```
+这个题目可以抽象为 Dynamic Program + Binary Search
+
+
+#### 2. IsContinuous 扑克牌中的顺子
+```c++
+class Solution {
+public:
+    bool IsContinuous( vector<int> numbers ) {
+        int LEN=numbers.size();
+        if (LEN<5) return false;
+        
+        int zeros=0;
+        sort(numbers.begin(), numbers.end());
+        
+        for (int i=1; i<numbers.size(); i++) {
+            int dist = dist=numbers[i]-numbers[i-1];
+            if (numbers[i-1] == 0) {zeros++;}
+            else if (dist==0) {return false;}
+            else if (dist > 1) {
+                if (zeros-dist+1>=0) {zeros = zeros-dist+1;}
+                else return false;
+            }
+        }
+        
+        return true;
+    }
+};
+```
+一个拓展的问题：如何利用哈希表，将限定取值范围的排序任务的时间复杂度降到O(N).
+
+
+
 
 
