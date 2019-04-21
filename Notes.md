@@ -90,23 +90,24 @@ class Solution {
 public:
     int minNumberInRotateArray(vector<int> rotateArray) {
         int LEN = rotateArray.size();
-        if (!LEN) {return 0;}
+        if (LEN < 1) {return 0;}
         // binary search
         
         int left=0, right=LEN-1;
         while (left<right) {
             int mid = left + (right-left)/2;
             if (rotateArray[mid] < rotateArray[right]) {right = mid;}
-            else if (rotateArray[mid] > rotateArray[right]) {left = mid + 1;}
-            //else {return std::min(rotateArray[left], rotateArray[right]);}
-            else {right--;}
-            
+            else {left = mid + 1;}
         }
         
+        // here, right=left
         return rotateArray[left];
     }
 };
 ```
+需要注意的是:
+
+while(left<right)定义的查找区间为[left, right)，所以上述left和right的更新：left=mid+1, right=mid.新的查找区间是[left, right)。
 
 #### 4. 整型数组中a[i], a[j]最大乘积、最大差值
 相关系列O(N)
@@ -137,6 +138,76 @@ public:
         
         return root;
     }
+};
+```
+
+#### 6. 矩阵中的路劲 back track
+```c++
+class Solution {
+public:
+    bool hasPath(char* matrix, int rows, int cols, char* str)
+    {
+        string pattern(str);
+        this->R = rows;
+        this->C = cols;
+        this->L = pattern.length();
+        if (R==0 || C==0) return false;
+        this->Pattern = str;
+        
+        int** next = new int*[4];
+        next[0] = new int[2]{-1, 0};
+        next[1] = new int[2]{1, 0};
+        next[2] = new int[2]{0, -1};
+        next[3] = new int[2]{0, 1};
+        
+        // cannot new char[R][C] ??
+        char **Matrix = new char*[R];
+        for (int i=0; i<R; i++) Matrix[i] = new char[C];
+        bool **Marked = new bool*[R];
+        for (int i=0; i<R; i++) Marked[i] = new bool[C];
+        
+        for (int i=0, idx=0; i<R; i++) {
+            for (int j=0; j<C; j++) Matrix[i][j] = matrix[idx++];
+        }
+        
+        for (int i=0, idx; i<R; i++) {
+            for (int j=0; j<C; j++) {
+                if (backtrack(i, j, 0, Matrix, Marked, next)) {
+                    return true;
+                }
+            }
+        }        
+        
+        return false;
+    }
+private:
+    int R, C, L;
+    char *Pattern;
+    
+    bool backtrack(int r, int c, int pos, char** matrix, bool** marked, int** next) {
+        
+        // the final state is true
+        if (pos==L) return true;
+        // the final state is false
+        if (r<0 || r>=R || c<0 || c>=C || matrix[r][c]!=Pattern[pos] || marked[r][c]) {
+            return false;
+        }
+        
+        // go on
+        marked[r][c] = true;
+        for (int i=0; i<4; i++) {
+            int *n = next[i];
+            if (backtrack(r+n[0], c+n[1], pos+1, matrix, marked, next)) {
+                return true;
+            }
+        }
+        
+        // back track
+        marked[r][c] = false;
+        return false;
+    }
+    
+
 };
 ```
 
