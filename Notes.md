@@ -269,5 +269,63 @@ private:
 };
 ```
 
+#### 8. Integer Break (不等式+求导)
+```c++
+class Solution {
+public:
+    int integerBreak(int n) {
+        if (n<2) return 0;
+        if (n==2) return 1;
+        if (n==3) return 2;
+        
+        // n>=4 (the point is to avoid 1)
+        int times3=n/3, times2=0;
+        if (n-3*times3 == 1) {
+            times3--;
+            times2 = 2;
+        }
+        if (n-3*times3 == 2) {
+            times2 = 1;
+        }
+        
+        return (int)pow(3, times3) * (int)pow(2, times2);
+    }
+};
+```
+另外可以采用O(N^2)的动态规划方法，可以考虑下。
+
+#### 9. 二进制中1的个数 位运算
+```c++
+class Solution {
+public:
+     int  NumberOf1(int n) {
+         int cnt=0;
+         if (n<0) {cnt++;}
+         for (int i=0; i<31; i++) {
+             if ((n>>i)%2!=0) {
+                 cnt++;
+             }
+         }
+         return cnt;
+     }
+};
+```
+或者采用 n&(n-1),作用是将 n 的二进制表示中最后一个1置为0.
+```c++
+class Solution {
+public:
+     int  NumberOf1(int n) {
+         int cnt=0;
+         while (n) {
+             cnt++;
+             // delete the last 1
+             n &= n-1;
+         }
+         return cnt;
+     }
+};
+```
+
+
 
 
