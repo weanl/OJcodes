@@ -142,6 +142,7 @@ public:
 ```
 
 #### 6. 矩阵中的路劲 back track
+感觉就是一种深搜 dfs
 ```c++
 class Solution {
 public:
@@ -211,6 +212,62 @@ private:
 };
 ```
 
+#### 7. 机器人的运动范围 dfs
+```c++
+class Solution {
+public:
+    int movingCount(int threshold, int rows, int cols)
+    {
+        if (threshold<0 || rows<=0 || cols<=0) return 0;
+        this->R = rows;
+        this->C = cols;
+        this->CNT = 0;
+        this->T = threshold;
+        
+        int** next = new int*[4];
+        next[0] = new int[2]{-1, 0};
+        next[1] = new int[2]{1, 0};
+        next[2] = new int[2]{0, -1};
+        next[3] = new int[2]{0, 1};
+        
+        bool **Marked = new bool*[R];
+        for (int i=0; i<R; i++) Marked[i] = new bool[C];
+        
+        backtrack (0, 0, Marked, next);
+        
+        return CNT;
+    }
+private:
+    int R, C, CNT, T;
+    
+    void backtrack (int r, int c, bool** marked, int** next) {
+        
+        if (r<0 || r>=R || c<0 || c>=C || marked[r][c] || !addup(r, c)) return;
+        
+        marked[r][c] = true;
+        CNT++;
+        
+        for (int i=0; i<4; i++) {
+            int *n = next[i];
+            backtrack(r+n[0], c+n[1], marked, next);
+        }
+        return;
+    }
+    
+    bool addup(int x, int y) {
+        int sum=0;
+        while (x>0) {
+            sum += x%10;
+            x /= 10;
+        }
+        while (y>0) {
+            sum += y%10;
+            y /= 10;
+        }        
+        return (sum <= T);
+    }
+};
+```
 
 
 
