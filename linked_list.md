@@ -50,15 +50,16 @@ void remove_if (node **head, remove_fn rm) {
         node *entry=*curr;
         // 
         if (rm(entry)) {
-            *cur = entry->next;
+            *curr = entry->next;
             free(entry);
         }
         else {
-            cur = &entry->next;
+            curr = &entry->next;
         }
     }
 }
 ```
+curr存的是节点next指针的地址（刚开始存的是指向头结点的指针的地址）．因为删除操作的本质是修改对应指针的值，所以可以通过curr找到对应的next指针，然后修改该指针的值．（指针的值便是指针所指向的内存空间的地址）
 
 
 
