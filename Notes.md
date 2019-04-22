@@ -325,6 +325,47 @@ public:
      }
 };
 ```
+类似于leetcode 191求hammingWeight(uint32_t n)．
+
+#### 10. 数值的整数次方
+O(N)的方法：
+```c++
+class Solution {
+public:
+    double Power(double base, int exponent) {
+        if (exponent==0) {return 1;}
+        
+        int E = (exponent>0)?(exponent):(-exponent);
+        double ans=1;
+        for (int i=E; i>0; i--) {
+            ans *= base;
+        }
+        
+        return (exponent>=0)?(ans):(1/ans);
+    }
+};
+```
+O(logN)的方法：{x_{n} = (n%2==0)?((x*x)^(n/2)) : ((x*x)^(n/2))*x }
+```c++
+class Solution {
+public:
+    double Power(double base, int exponent) {
+        if (exponent == 0) return 1;
+        if (exponent == 1) return base;
+        
+        bool isNegtive = false;
+        if (exponent < 0) {
+            exponent = -exponent;
+            isNegtive = true;
+        }
+        
+        double power = Power(base*base, exponent/2);
+        if (exponent%2 == 1) power *= base;
+        
+        return isNegtive?(1/power):power;
+    }
+};
+```
 
 
 
