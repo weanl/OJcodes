@@ -268,6 +268,43 @@ private:
     }
 };
 ```
+#### 7.1 回溯法 打印１到n位数字
+```c++
+void printNumber(vector<char> &number) {
+    int index=0;
+    while (index < number.size() && number[index] == '0') {index++;}
+    while (index < number.size()) {cout << number[index++];}
+    cout << "\n";
+}
+
+void backtrackPrint(vector<char> &number, int digit) {
+    // the final state
+    if (digit == number.size()) {
+        printNumber(number);
+        return;
+    }
+
+    for (int i=0; i<10; i++) {
+        number[digit] = (char)(i+'0');
+        backtrackPrint(number, digit+1);
+    }
+}
+
+void print1ToMaxOfNDigits(int n) {
+    if (n<=0) return;
+
+    vector<char > number(n, '0');
+    backtrackPrint(number, 0);
+}
+
+int main () {
+
+    print1ToMaxOfNDigits(2);
+    return 0;
+}
+```
+
+
 
 #### 8. Integer Break (不等式+求导)
 ```c++
