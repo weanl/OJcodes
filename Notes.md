@@ -109,6 +109,36 @@ public:
 
 while(left<right)定义的查找区间为[left, right)，所以上述left和right的更新：left=mid+1, right=mid.新的查找区间是[left, right)。
 
+#### 3.1 二维数组的查找
+```c++
+class Solution {
+public:
+    bool Find(int target, vector<vector<int> > array) {
+        // search from the right-top
+        int Right = array[0].size()-1;
+        int Top = 0;
+            
+        int col = Right, row = Top;
+        while(Right>=0 && Top<array.size())
+        {
+            col = Right; row = Top;
+            if (target == array[row][col]) break;
+            // if smaller than the smallest element along the certain column
+            //    then, delete the column
+            if (target < array[Top][Right]){Right--; continue;}
+            // if bigger than the boggest element along the certain row
+            //    then, delete the row
+            if (target > array[Top][Right]){Top++; continue;}
+            
+        }
+        
+        if (Right>=0 && Top<array.size()) return true;
+        else return false;
+    }
+};
+```
+
+
 #### 4. 整型数组中a[i], a[j]最大乘积、最大差值
 相关系列O(N)
 
