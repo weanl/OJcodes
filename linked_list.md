@@ -110,7 +110,35 @@ public:
 ```
 
 
-#### 
+#### 2. 反转链表
+```c++
+/*
+struct ListNode {
+	int val;
+	struct ListNode *next;
+	ListNode(int x) :
+			val(x), next(NULL) {
+	}
+};*/
+class Solution {
+public:
+    ListNode* ReverseList(ListNode* pHead) {
+        ListNode *curr=pHead, *prev=nullptr;
+        
+        while (curr) {
+            ListNode *entry=curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = entry;
+        }
+        
+        return prev;
+    }
+};
+```
+
+
+####
 
 
 
