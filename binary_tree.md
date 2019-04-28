@@ -153,3 +153,36 @@ public:
 };
 ```
 
+#### 1. 二叉树中和为某一值的路劲
+
+```c++
+class Solution {
+public:
+    vector<vector<int> > FindPath(TreeNode* root,int expectNumber) {
+        if (!root) {return ans;}
+        this->target = expectNumber;
+        vector<int> tmp;
+        dfs(root, tmp, 0);
+        
+        return ans;
+    }
+private:
+    int target;
+    vector<vector<int> > ans;
+    
+    void dfs (TreeNode* t, vector<int> &vec, int sum) {
+        
+        vec.push_back(t->val);
+        sum += t->val;
+        if (!t->left && !t->right && sum==target) {ans.push_back(vec);}
+        
+        if (t->left) {dfs(t->left, vec, sum);}
+        
+        if (t->right) {dfs(t->right, vec, sum);}
+        
+        // clear the vec
+        sum -= t->val;
+        vec.pop_back();
+    }
+};
+```
