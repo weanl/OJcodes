@@ -434,6 +434,53 @@ public:
 };
 ```
 
+#### 11. 栈问题
 
+##### 11.1 包含 min函数的栈
+用另一个栈记录每一步 push(), pop(), min(), 用额外的空间取得 O(1)的时间复杂度。
+```c++
+class Solution {
+private: 
+    stack<int> minstk, stk;
+public:
+    void push(int value) {
+        stk.push(value);
+        // if is empty, the min operation will cause segment error
+        minstk.empty() ? minstk.push(value) : minstk.push(std::min(value, minstk.top()));
+    }
+    void pop() {
+        minstk.pop();
+        stk.pop();
+    }
+    int top() {
+        return stk.top();
+    }
+    int min() {
+        return minstk.top();
+    }
+};
+```
 
+##### 11.2 栈的压入、弹出序列
+```c++
+class Solution {
+public:
+    bool IsPopOrder(vector<int> pushV,vector<int> popV) {
+        stack<int> S;
+        
+        int LEN = pushV.size();
+        int A=0, B=0;
+        
+        while (B<LEN) {
+            if (!S.empty() && popV[B]==S.top()) {B++;S.pop();}
+            else {
+                if (A<LEN) {S.push(pushV[A]); A++;}
+                else {return false;}
+            }
+        }
+        
+        return true;
+    }
+};
+```
 
