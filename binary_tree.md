@@ -186,3 +186,53 @@ private:
     }
 };
 ```
+
+#### 2. 二叉树中两节点的最低公共祖先
+
+```c++
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        
+        int minSize=0x7FFFFFFF;
+        bool pVisit=false, qVisit=false;
+        TreeNode *ancestor = nullptr;
+        
+        // based on PostOrder
+        stack<TreeNode *> stk;
+        TreeNode *curr = root, *last=root;
+        TreeNode *visit=nullptr;
+        while ((!stk.empty() || curr) && (!pVisit || !qVisit)) {
+            if (curr) {
+                stk.push(curr);
+                curr = curr->left;
+            }
+            else if (!stk.top()->right || stk.top()->right==last) {
+                visit = stk.top();
+                stk.pop();
+                last = visit;
+                curr = nullptr;
+                if (visit == p) {pVisit = true;}
+                if (visit == q) {qVisit = true;}
+            }
+            else {
+                curr = stk.top()->right;
+            }
+            // the point
+            if (pVisit+qVisit == 1) {
+                if (stk.size() < minSize) {
+                    minSize=stk.size(); 
+                    ancestor=stk.top();
+                } 
+            }
+            
+        }
+        
+        return ancestor;
+    }
+};
+```
+
+
+
+####
