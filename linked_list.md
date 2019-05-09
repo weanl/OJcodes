@@ -138,6 +138,60 @@ public:
 ```
 
 
+#### 3. 复杂链表的复制
+```c++
+/*
+struct RandomListNode {
+    int label;
+    struct RandomListNode *next, *random;
+    RandomListNode(int x) :
+            label(x), next(NULL), random(NULL) {
+    }
+};
+*/
+class Solution {
+public:
+    RandomListNode* Clone(RandomListNode* pHead)
+    {
+        if (!pHead) return nullptr;
+        
+        // first round: clone along the next
+        RandomListNode *curr=pHead;
+        while (curr) {
+            RandomListNode *entry=curr->next;
+            curr->next = new RandomListNode(curr->label);
+            curr->next->next = entry;
+            curr = entry;
+        }
+        
+        // second round: set *random
+        curr = pHead;
+        while (curr) {
+            RandomListNode *clone=curr->next;
+            // the random may be nullptr
+            clone->random = (curr->random)?curr->random->next:nullptr;
+            curr = clone->next;
+        }
+        
+        // third round: split the List
+        curr = pHead;
+        RandomListNode *newHead=curr->next;
+        while (curr) {
+            RandomListNode *clone=curr->next;
+            curr->next = clone->next;
+            curr = clone->next;
+            clone->next = (curr!=nullptr)?curr->next:nullptr;
+        }
+        
+        return newHead;
+    }
+};
+```
+
+
+
+
+
 ####
 
 
