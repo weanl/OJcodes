@@ -1,10 +1,11 @@
+刷题代码与笔记
+---
 
-
-#### 1. Longest Increasing Subsequence
+## 1. Longest Increasing Subsequence
 
 输入为nums[0:LEN-1]
 
-###### 1.1 dp[i]表示以nums[i]结尾的增子序列的长度
+- 1.1 dp[i]表示以nums[i]结尾的增子序列的长度
 
 ```c++
 class Solution {
@@ -32,10 +33,11 @@ public:
 };
 ```
 
-###### 1.2 从前往后遍历记录其他的信息
-vecor<int> dp;//空初始化
+- 1.2 从前往后遍历记录其他的信息
 
-dp[0]:dp[i]表示当前遍历步下最长增子序列长度为i+1,且对应的最小的结束元素为dp[i]=nums[somewhere].
+    vecor<int> dp;//空初始化
+
+    dp[0]:dp[i]表示当前遍历步下最长增子序列长度为i+1,且对应的最小的结束元素为dp[i]=nums[somewhere].
 ```c++
 class Solution {
 public:
@@ -56,7 +58,7 @@ public:
 这个题目可以抽象为 Dynamic Program + Binary Search
 
 
-#### 2. IsContinuous 扑克牌中的顺子
+## 2. IsContinuous 扑克牌中的顺子
 ```c++
 class Solution {
 public:
@@ -84,7 +86,7 @@ public:
 (待续)一个拓展的问题：如何利用哈希表，将限定取值范围的排序任务的时间复杂度降到O(N).
 
 
-#### 3. minNumberInRotateArray 旋转数组的最小数字
+## 3. minNumberInRotateArray 旋转数组的最小数字
 ```c++
 class Solution {
 public:
@@ -109,7 +111,7 @@ public:
 
 while(left<right)定义的查找区间为[left, right)，所以上述left和right的更新：left=mid+1, right=mid.新的查找区间是[left, right)。
 
-#### 3.1 二维数组的查找
+- 3.1 二维数组的查找
 ```c++
 class Solution {
 public:
@@ -138,11 +140,10 @@ public:
 };
 ```
 
-
-#### 4. 整型数组中a[i], a[j]最大乘积、最大差值
+## 4. 整型数组中a[i], a[j]最大乘积、最大差值
 相关系列O(N)
 
-#### 5. lowestCommonAncestor 树中两个节点的最低公共祖先
+## 5. lowestCommonAncestor 树中两个节点的最低公共祖先
 ```c++
 /**
  * Definition for a binary tree node.
@@ -171,7 +172,7 @@ public:
 };
 ```
 
-#### 6. 矩阵中的路劲 back track
+## 6. 矩阵中的路劲 back track
 感觉就是一种深搜 dfs
 ```c++
 class Solution {
@@ -242,7 +243,7 @@ private:
 };
 ```
 
-#### 7. 机器人的运动范围 dfs
+## 7. 机器人的运动范围 dfs
 ```c++
 class Solution {
 public:
@@ -298,7 +299,7 @@ private:
     }
 };
 ```
-#### 7.1 回溯法 打印１到n位数字
+- 7.1 回溯法 打印１到n位数字
 ```c++
 void printNumber(vector<char> &number) {
     int index=0;
@@ -333,10 +334,45 @@ int main () {
     return 0;
 }
 ```
+- 7.2 回溯法 字符串的排列
+```c++
+class Solution {
+private:
+    vector<string> ans;
+public:
+    vector<string> Permutation(string str) {
+        int LEN = str.length();
+        if (LEN < 1) return ans;
+        
+        sort(str.begin(), str.end());
+        string path = "";
+        backtracking(str, path);
+        return ans;
+    }
+    void backtracking (string s, string path) {
+        int LEN = s.length();
+        if (LEN == 1) {
+            path += s;
+            ans.push_back(path);
+        }
+        else {
+            set<char> used; // remember repeated char
+            for (int i=0; i<LEN; i++) {
+                if (used.find(s[i]) != used.end()) continue;
+                used.insert(s[i]);
+                path += s[i];
+                string left = s.substr(0, i) + s.substr(i+1, LEN-i-1);
+                backtracking(left, path);
+                // step back for back track
+                path = path.substr(0, path.length()-1);
+            }
+        }
+    }
+};
+```
 
 
-
-#### 8. Integer Break (不等式+求导)
+## 8. Integer Break (不等式+求导)
 ```c++
 class Solution {
 public:
@@ -361,7 +397,7 @@ public:
 ```
 另外可以采用O(N^2)的动态规划方法，可以考虑下。
 
-#### 9. 二进制中1的个数 位运算
+## 9. 二进制中1的个数 位运算
 ```c++
 class Solution {
 public:
@@ -394,7 +430,7 @@ public:
 ```
 类似于leetcode 191求hammingWeight(uint32_t n)．
 
-#### 10. 数值的整数次方
+## 10. 数值的整数次方
 O(N)的方法：
 ```c++
 class Solution {
@@ -434,9 +470,9 @@ public:
 };
 ```
 
-#### 11. 栈问题
+## 11. 栈问题
 
-##### 11.1 包含 min函数的栈
+- 11.1 包含 min函数的栈
 用另一个栈记录每一步 push(), pop(), min(), 用额外的空间取得 O(1)的时间复杂度。
 ```c++
 class Solution {
@@ -461,7 +497,7 @@ public:
 };
 ```
 
-##### 11.2 栈的压入、弹出序列
+- 11.2 栈的压入、弹出序列
 ```c++
 class Solution {
 public:
