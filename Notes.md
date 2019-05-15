@@ -520,3 +520,50 @@ public:
 };
 ```
 
+## 12. 最小的k个数 (快速选择算法)
+
+- 基于快排的 _Partition_ 修改原数组
+```c++
+class Solution {
+public:
+    vector<int> GetLeastNumbers_Solution(vector<int> input, int k) {
+        int LEN=input.size();
+        if (LEN<=0 || k>LEN || k<=0) {
+            vector<int> ans;
+            return ans;
+        }
+        
+        int start=0, end=LEN-1;
+        int index = Partition(input, start, end);
+        while (index != k-1) {
+            if (index >k-1) {
+                end = index-1;
+                index = Partition(input, start, end);
+            }
+            else {
+                start = index+1;
+                index = Partition(input, start, end);
+            }
+        }
+        vector<int> ans(input.begin(), input.begin()+k);
+        return ans;
+    }
+    
+    // 填坑法
+    int Partition (vector<int> &array, int start, int end) {
+        int pivot=array[start];
+        int i=start, j=end;
+        while (i < j) {
+            while (array[j]>=pivot && j>i) {j--;}
+            if (i < j) {array[i++] = array[j];}
+            
+            while (array[i]<=pivot && i<j) {i++;}
+            if (i < j) {array[j--] = array[i];}
+            
+        }
+        array[i] = pivot;
+        return i;
+    }
+    
+};
+```
