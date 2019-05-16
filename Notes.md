@@ -567,3 +567,108 @@ public:
     
 };
 ```
+## 13. 堆的相关问题
+- 数据流的中位数
+```c++
+class Solution {
+private:
+    priority_queue<int, vector<int>, less<int>> maxHeap;
+    priority_queue<int, vector<int>, greater<int>> minHeap;
+    
+public:
+    void Insert(int num)
+    {
+        int size1=maxHeap.size(), size2=minHeap.size();
+        if (size1 == size2) {
+            if (size2==0 || minHeap.top()>num) {
+                maxHeap.push(num);
+            }
+            else {
+                minHeap.push(num);
+                maxHeap.push(minHeap.top());
+                minHeap.pop();
+            }
+        }
+        // size1 = size2 + 1
+        else {
+            if (num>maxHeap.top()) {
+                minHeap.push(num);
+            }
+            else {
+                maxHeap.push(num);
+                minHeap.push(maxHeap.top());
+                maxHeap.pop();
+            }
+        }
+    }
+    double GetMedian()
+    { 
+        int len = maxHeap.size() + minHeap.size();
+        if ((len&1) == 0) {
+            return ((double)maxHeap.top() + (double)minHeap.top()) / 2;
+        }
+        else {
+            return (double)maxHeap.top();
+        }
+    }
+};
+```
+实际上 priority_queue 底层也是通过封装 push_heap 和 pop_heap 实现的。下面关注一些原理。
+
+采用`vector + push_heap + pop_heap + less + greater` 实现最大(小)堆。`less` 对应的最大堆，即 vector 插入元素后用 push_heap + less 进行调整，且堆顶元素为 vector[0]；在删除元素时，先用 pop_heap + less 将堆顶元素调整到 vector[-1]，再执行 vector 的 pop_back 操作。
+```c++
+class Solution {
+private:
+    vector<int> maxHeap;
+    vector<int> minHeap;
+    
+public:
+    void Insert(int num)
+    {
+        int size1=maxHeap.size(), size2=minHeap.size();
+        if (size1 == size2) {
+            if (size2==0 || minHeap[0]>num) {
+                maxHeap.push_back(num);
+                push_heap(maxHeap.begin(), maxHeap.end(), less<int>());
+            }
+            else {
+                minHeap.push_back(num);
+                push_heap(minHeap.begin(), minHeap.end(), greater<int>());
+                
+                maxHeap.push_back(minHeap[0]);
+                push_heap(maxHeap.begin(), maxHeap.end(), less<int>());
+                
+                pop_heap(minHeap.begin(), minHeap.end(), greater<int>());
+                minHeap.pop_back();
+            }
+        }
+        // size1 = size2 + 1
+        else {
+            if (num>maxHeap[0]) {
+                minHeap.push_back(num);
+                push_heap(minHeap.begin(), minHeap.end(), greater<int>());
+            }
+            else {
+                maxHeap.push_back(num);
+                push_heap(maxHeap.begin(), maxHeap.end(), less<int>());
+                
+                minHeap.push_back(maxHeap[0]);
+                push_heap(minHeap.begin(), minHeap.end(), greater<int>());
+                
+                pop_heap(maxHeap.begin(), maxHeap.end(), less<int>());
+                maxHeap.pop_back();
+            }
+        }
+    }
+    double GetMedian()
+    { 
+        int len = maxHeap.size() + minHeap.size();
+        if ((len&1) == 0) {
+            return ((double)maxHeap[0] + (double)minHeap[0]) / 2;
+        }
+        else {
+            return (double)maxHeap[0];
+        }
+    }
+};
+```
