@@ -672,3 +672,47 @@ public:
     }
 };
 ```
+
+## 14. 最大值队列
+- 最大值滑动窗口计算
+
+(leetcode: 239. Sliding Window Maximum; nowcoder: maxInWindows)
+```c++
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        vector<int> ans;
+        int len = nums.size();
+        if (len<1 || len<k) return ans;
+        
+        deque<int> index;
+        
+        // initialize
+        for (unsigned int i=0; i<k; i++) {
+            while (!index.empty() && nums[i]>=nums[index.back()]) {
+                index.pop_back();
+            }
+            index.push_back(i);
+        }
+        
+        for (unsigned int i=k; i<len; i++) {
+            ans.push_back(nums[index.front()]);
+            while (!index.empty() && nums[i]>=nums[index.back()]) {
+                index.pop_back();
+            }
+            if (!index.empty() && index.front()<=(int)(i-k)) {
+                index.pop_front();
+            }
+            index.push_back(i);
+        }
+        ans.push_back(nums[index.front()]);
+        return ans;
+    }
+};
+```
+采用双端队列记录元素的下标，方便判断队头元素是否被移除当前的滑动窗口。
+
+
+- 实现最大值队列
+
+
